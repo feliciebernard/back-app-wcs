@@ -1,4 +1,5 @@
 import { Resolver, Mutation, Arg, Query, ID } from "type-graphql";
+import { Continent } from "../entities/Continent";
 import { Country, CountryInput } from "../entities/Country";
 import datasource from "../utils";
 
@@ -6,10 +7,23 @@ import datasource from "../utils";
 export class CountriesResolver {
   @Mutation(() => Country)
   async createCountry(
-    @Arg("data", () => CountryInput) data: CountryInput,
-    @Arg("continentID", () => ID) code: string
+    @Arg("data", () => CountryInput) data: CountryInput
   ): Promise<Country> {
-    return await datasource.getRepository(Country).save(data);
+    const continent = await datasource.getRepository(Continent).findOne({
+      where: { code: data.continentCode },
+    });
+
+    if (!continent) {
+      throw new Error("Continent not found");
+    }
+
+    const country = new Country();
+    country.code = data.code;
+    country.name = data.name;
+    country.emoji = data.emoji;
+    country.continent = continent;
+
+    return await datasource.getRepository(Country).save(country);
   }
 
   @Query(() => [Country])

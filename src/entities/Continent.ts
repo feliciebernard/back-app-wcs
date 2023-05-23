@@ -13,10 +13,8 @@ export class Continent {
   @Field()
   name: string;
 
-  @OneToMany(() => Country, (country) => country.continent, {
-    onDelete: "CASCADE",
-  })
-  @Field(() => [Country], { nullable: true })
+  @OneToMany(() => Country, (country) => country.continent)
+  @Field(() => [Country])
   countries: Country[];
 }
 

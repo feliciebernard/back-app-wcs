@@ -3,13 +3,14 @@ import { ApolloServer } from "apollo-server";
 import datasource from "./utils";
 import { buildSchema } from "type-graphql";
 import { CountriesResolver } from "./resolvers/Country";
+import { ContinentsResolver } from "./resolvers/Continent";
 
 const PORT = 5000;
 
 async function bootstrap(): Promise<void> {
   // ... Building schema here
   const schema = await buildSchema({
-    resolvers: [CountriesResolver],
+    resolvers: [CountriesResolver, ContinentsResolver],
     validate: { forbidUnknownValues: false },
   });
 
