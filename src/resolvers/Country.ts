@@ -5,7 +5,9 @@ import datasource from "../utils";
 @Resolver()
 export class CountriesResolver {
   @Mutation(() => Country)
-  async createCountry(@Arg("data") data: CountryInput): Promise<Country> {
+  async createCountry(
+    @Arg("data", () => CountryInput) data: CountryInput
+  ): Promise<Country> {
     return await datasource.getRepository(Country).save(data);
   }
 
