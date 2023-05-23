@@ -1,10 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  PrimaryColumn,
+  ManyToOne,
+} from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
+import { Continent } from "./Continent";
 
 @Entity()
 @ObjectType()
 export class Country {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   @Field(() => ID)
   code: string;
 
@@ -15,11 +22,17 @@ export class Country {
   @Column()
   @Field()
   emoji: string;
+
+  @ManyToOne(() => Continent, (continent) => continent.countries, {
+    onDelete: "CASCADE",
+  })
+  @Field(() => Continent, { nullable: true })
+  continent: Continent;
 }
 
 @InputType()
 export class CountryInput {
-  @Field()
+  @Field(() => ID)
   code: string;
 
   @Field()

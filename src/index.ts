@@ -10,6 +10,7 @@ async function bootstrap(): Promise<void> {
   // ... Building schema here
   const schema = await buildSchema({
     resolvers: [CountriesResolver],
+    validate: { forbidUnknownValues: false },
   });
 
   // Create the GraphQL server
